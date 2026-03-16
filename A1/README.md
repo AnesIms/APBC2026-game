@@ -13,10 +13,10 @@ Haskell, Java) or a scripting language (e.g. Bash, R, Python, Ruby).  The
 program should accept the name of the text file as command line
 argument.
 
-* If option -I (for 'Ignore') is given, case shall be ignored (by
+* If option `-I` (for 'Ignore') is given, case shall be ignored (by
   converting all upper case to lower case, see below).
 
-* If option -l (for 'list') is present, the program must print a list
+* If option `-l` (for 'list') is present, the program must print a list
   of words instead only counts.  This list must be sorted by word
   frequency, starting with the most common words.  ( per line print
   one word and its frequency, separated by a tab symbol; in case of
@@ -26,14 +26,14 @@ argument.
 
 To make the solutions of different class participants distinguishable
 and to allow (automatic) testing, stick to the following naming scheme:
-$github_name-WordCount.$suffix (e.g. amkilar-WordCount.py for amkilar's
+**$github_name-WordCount.$suffix** (e.g. amkilar-WordCount.py for amkilar's
 solution in python).
 
 As always, use the provided input files as test cases. Your programs should yield exactly what is given in the output files.
 
 Copy your submission to the subdirectory A1 of our repository. Take
-care to push your result in the correct branch (named like your Github
-account) and place a pull request.  Then, all remaining issues can be
+care to push your result to the correct branch (named like your Github
+account) and place a pull request. Then, all remaining issues can be
 discussed via Github.
 
 Hints:
@@ -44,8 +44,8 @@ Hints:
   us, the list must comprise  at least all symbols occurring in the
   test data. For example, "full!?stop" counts as two words.
 
-- In case of option '-I', ignore upper/lowercase for counting, e.g.
-  The = the. For this purpose just convert upper case to lower case.
+- In case of option `-I`, ignore upper/lowercase for counting, e.g.
+  The = the. For this purpose, just convert upper case to lower case.
 
 - Make sure that your program understands calls like
 ```
