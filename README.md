@@ -21,20 +21,26 @@ Individual assignments and their **exact due dates** are listed in the schedule 
 
 Each assignment has two deadlines:
 
-- Submit due: push your solution (code + description/tests) to the repository by this date.
+- Submit due: push your solution (code + description/tests) to **your branch** of the repository and open a pull request by this date.
 
 - Revise due: by this date, you must
 
-    1) review at least one colleague’s submission and leave actionable feedback (e.g., correctness, readability, edge cases, performance, tests, documentation), and
+    1) review at least one colleague’s submission (more on revision below)
 
-    2) address feedback you received by pushing a revision (if feedback arrives in time).
-    If you receive feedback after the revise deadline, you are still encouraged to incorporate it, but it will not be required for that assignment.
+    2) address feedback you received by pushing a revision (encouraged, but not required).
+
+---
 
 #### Code review expectations
 
-- Reviews should be submitted as GitHub Pull Request reviews/comments (preferred) or as issues linked to the relevant code.
+- Reviews should be submitted as GitHub Pull Request reviews/comments or as issues linked to the relevant code.
 
-- Each review should include at least: (i) one thing that works well, (ii) one concrete improvement suggestion, and (iii) at least one question or edge case to consider.
+- When reviewing a pull request, make sure your review includes:
+    - whether the code works,
+    - whether the output precisely matches the assignment requirements,
+    - one positive comment about something well done,
+    - one specific suggestion for improvement,
+    - one question or edge case for the author to consider.
 
 You are encouraged to ask each other for help throughout the week (in GitHub discussions). Collaboration is expected; copying without attribution is not.
 
