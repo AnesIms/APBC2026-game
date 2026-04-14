@@ -1,78 +1,100 @@
-# APBC 2026
--------------------------------------------------------------------------
-270056 Algorithms and Development of Programmes for Biological Chemistry
--------------------------------------------------------------------------
+Write a program to solve the following tasks by dynamic programming.
 
-This git repository serves as a platform for information, sharing course material, communication, and submission of coursework.
+The Manhattan Tourist Problem:
+------------------------------
 
-Students of the class shall work on different assignments and ---finally--- on a team project. The assignments are generally described in README files in the subdirectories `An`; submission is generally done via git/GitHub.
+The street network of Manhattan has the form of a grid. Our tourist values streets (from crossing to crossing) by the number of sights along them.
 
-The warm-up assignment in subdirectory A0 demos this scheme and explains the submission via GitHub (including preparations). Follow this assignment to get started.
+```
+       start here
+       |
+       v
+       +--3--+--3--+
+       |     |     |
+       1     6     2
+       |     |     |
+       +--3--+--2--+
+       |     |     |
+       4     0     7
+       |     |     |
+       +--5--+--7--+
+                   ^
+                   |
+                  end here
+```
 
-Feel free to discuss via pull request comments (in particular, assignment-specific stuff) or GitHub issues for all more general things. 
+The problem is to find a path from the top left to the bottom right corner of the grid with maximum weight. In each step, the tourist moves either to the east or to the south.
 
-**Don't forget to mention the people you want to address (e.g. @\<user\> for a particular GitHub user or @TBIAPBC/APBC2026 for all).**
+Your program must read in the weights from a file (and, naturally shall work for arbitrary grid sizes). For
+the above grid, the file looks as follows
 
-------------------------
-Assignments Guidelines
-------------------------
+```
+     # size (north-south dimension times west-east dimension)
+     # 3 3
+     # north-south streets
+     1 6 2
+     4 0 7
+     # west-east streets
+     3 3
+     3 2
+     5 7
+```
 
-Individual assignments and their **exact due dates** are listed in the schedule below. Please follow those dates.
+The input should be allowed to contain decimal numbers (with maximally 2 digits after the comma), empty lines and arbitrary comments; therefore, your program must ignore all comments in the input (the comments start with the '#' symbol and extend to the end of the line).
 
-Each assignment has two deadlines:
+A slight enhancement is to also consider diagonal edges between vertices. As you can expect, we need additional input for that. In particular, a (N-1)\*(N-1) matrix containing diagonal edge weights. A real-world input file on a 5*5 grid containing vertical, horizontal and diagonal edge weight could look like this
 
-- Submit due: push your solution (code + description/tests) to **your branch** of the repository and open a pull request by this date.
+```
+#G_down: 4 5
+  0.60   0.65   0.91   0.94   0.14
+  0.85   0.27   0.70   0.31   0.63
+  0.63   0.23   0.35   0.77   0.20
+  0.37   0.76   0.41   0.30   0.67
+#---
+#G_right: 5 4
+  0.76   0.41   0.72   0.13
+  0.57   0.64   0.62   0.62
+  0.37   0.98   0.36   0.24
+  0.99   0.77   0.39   0.35
+  0.37   0.34   0.62   0.82
+#---
+#G_diag: 4 4
+  6.74   7.03   2.47   6.25
+  4.48   3.75   2.98   3.62
+  7.90   3.63   3.67   3.18
+  9.30   8.40   9.02   2.58
+#---
+```
 
-- Revise due: by this date, you must
+Your program should be able to process both horizontal/vertical (HV) and horizontal/vertical/diagonal (HVD) input files and print the weight of the maximum path for a given input file to STDOUT. Implement a switch -d, which lets the program process input files that do not only contain HV, but also diagonal edge weights. Given option -t, the program should additionally print the best path. In our example, the calls and respective
+output should thus look like following:
 
-    1) review at least one colleague’s submission (more on revision below)
+```
+    > amkilar-Manhattan Manhattan-testHV1.in
+    18
+```
 
-    2) address feedback you received by pushing a revision (encouraged, but not required).
+and
 
----
+```
+    > amkilar-Manhattan -t Manhattan-testHV1.in
+    18
+    ESES
+```
 
-#### Code review expectations
+where 'E' means move to east and 'S', move to south; the moves are reported in the order from start to end. (If several maximum paths should be possible, our tourist always prefers going to the south!)
 
-- Reviews should be submitted as GitHub Pull Request reviews/comments or as issues linked to the relevant code.
+A sample call for the version considering also diagonal weights should look like
 
-- When reviewing a pull request, make sure your review includes:
-    - whether the code works,
-    - whether the output precisely matches the assignment requirements,
-    - one positive comment about something well done,
-    - one specific suggestion for improvement,
-    - one question or edge case for the author to consider.
+```
+   > amkilar-Manhattan -d Manhattan-testHVD1.in
+```
 
-You are encouraged to ask each other for help throughout the week (in GitHub discussions). Collaboration is expected; copying without attribution is not.
+Here, let 'D' denote a diagonal step in the traceback.
 
-Please find the assignment descriptions in the respective subdirectories.
+Hints:
 
-------------------------
-Schedule and Assignments due dates
-------------------------
-
-| Date | Topic | Assignment | Submit due | Revise due |
-|---|---|---|---|---|
-| Mar-17-2026 | Initial meeting & warmup & Word Count | A0 & A1 | Mar-20-2026 | Mar-22-2026
-| Mar-24-2026 | Optimization | A2 | Apr-07-2026 | Apr-10-2026
-| Apr-14-2026 | Dynamic programming | A3 | Apr-22-2026 | Apr-24-2026
-| Apr-28-2026 | TBA | A4 | May-06-2026 | May-08-2026
-| May-05-2026 | Team project | A5 |
-| May-12-2026 | Team project | A5 |
-| Jun-02-2026 | Team project | A5 |
-| Jun-09-2026 | Team project | A5 |
-| Jun-16-2026 | Final Project Meeting: Battle of the Robots | A5 |
+  * Implement a 2D DP matrix that stores the optimal path weight from the start to each crossing (or corner). The final result is computed at the end corner. The path is obtained by trace back.
 
 
-
-------------------------
-Potentially useful links
-------------------------
-
-* [CodeCademy](https://www.codecademy.com) provides interactive tutorials of programming languages (or git).
-* [Git](https://git-scm.com): main page for the git version control system
-* [Git Introduction](https://imada.sdu.dk/~jlandersen/_static/git.pdf): an intro to distributed version control, using Git.
-* [Git school](https://github.com/git-school): git course material
-* ... and here is a [video](https://vimeo.com/314971616/ed90cde6ec) demonstrating git features (using this visualization tool)
-* [Interactive Tutorial](https://learngitbranching.js.org/): introductory and advanced git tutorial
-* [Git Cheat Sheet](https://education.github.com/git-cheat-sheet-education.pdf)
-* [Google](https://www.google.at)
+Happy hacking!
