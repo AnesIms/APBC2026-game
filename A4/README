@@ -1,0 +1,21 @@
+Liebe APBC-ler/innen,
+
+(1) Zufallssequenzen aus Markov Modellen:
+  In der letzten Aufgabe betrachteten wir bereits wie man Sequenzen durch
+  Wuerfeln gemaesz einer gegebenen Haufigkeit produziert. Dasselbe kann man 
+  natuerlich anstatt mit Nukleotidhaeufigkeiten auch mit di-nucleotid,
+  oder generell mit k-let Haeufigkeiten machen. In diesem Fall haengt die
+  Wahrscheinlichkeit des naechsten Buchstaben von den k-1 vorangehenden
+  Buchstaben ab, wir haben somit einen Markov Prozess. Beim letzten mal
+  haben wir es implizit mit einer Markov chain of order-0 zu tun gehabt.
+
+  (a) Schreibe ein Programm, das eine Sequenz einliest, die Haufigkeiten
+      der k-lets (fuer gegebenes k) bestimmt, die transition probability
+      matrix des Markov Prozesses aufstellt, und neue Zufallssequenzen
+      erzeugt.
+
+  (b) Schreibe ein aequivalentes Programm, das ein suffix array fuer die
+      selbe Aufgabe verwendet.
+
+Happy hacking
+
