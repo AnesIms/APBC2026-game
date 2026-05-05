@@ -56,10 +56,10 @@ Schedule and Assignments due dates
 | Mar-24-2026 | Optimization | A2 | Apr-07-2026 | Apr-10-2026
 | Apr-14-2026 | Dynamic programming | A3 | Apr-22-2026 | Apr-24-2026
 | Apr-28-2026 | Markov models | A4 | May-06-2026 | May-08-2026
-| May-05-2026 | Game - Inro  | A5 |  May-11-2026
-| May-12-2026 | Game - Round I project | A5 | Jun-01-2026
-| Jun-02-2026 | Game - Round I | A5 | Jun-08-2026
-| Jun-09-2026 | Game - Round I | A5 | Jun-15-2026
+| May-05-2026 | Game - Intro  | A5 |  May-11-2026
+| May-12-2026 | Game - Round I | A5 | Jun-01-2026
+| Jun-02-2026 | Game - Round II | A5 | Jun-08-2026
+| Jun-09-2026 | Game - Round III | A5 | Jun-15-2026
 | Jun-16-2026 | Game: Battle of the Robots | A5 |
 
 
