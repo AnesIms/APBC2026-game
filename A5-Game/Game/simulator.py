@@ -85,6 +85,9 @@ class Simulator(object):
 		self.mine_mode = mine_mode
 		self.jumps_allowed = jumps_allowed
     
+		# Initialize stats now that all players are added
+		self.stats = {pId: {'gold': [], 'health': [], 'moves': []} for pId in range(len(self._players))}
+
 		for pId in range(len(self._players)):
 			# to avoid breaking the player interface,
 			# set number of rounds in the players status objects
@@ -521,8 +524,14 @@ class Simulator(object):
 					self._trigger_mine(x, y, pId)
 					self.map[x, y].status = TileStatus.Empty
 					self._mines.pop((x, y))
-					print(f"Player {pId} triggered mine at ({x}, {y})")					
-	
+					print(f"Player {pId} triggered mine at ({x}, {y})")	
+
+		# collect statistics for this round
+		for pId in range(len(self._players)):
+			self.stats[pId]['gold'].append(self._status[pId].gold)
+			self.stats[pId]['health'].append(self._status[pId].health)
+			self.stats[pId]['moves'].append(sum(1 for m in moveStatusPerPlayer[pId] if m == MoveStatus.Done))				
+
 	def _trigger_mine(self, x, y, pId):
 		if self.mine_mode == "damage":
 			MINE_DAMAGE = 30
