@@ -8,6 +8,7 @@ from game_utils import Tile, TileStatus, TileObject
 from game_utils import Map, Status
 from simulator import Simulator
 from player_base import Player
+from stats import plot_stats
 
 parser = argparse.ArgumentParser(description="Robot Race Simulator 7000")
 parser.add_argument('--viz', help="filename for the visualization of the race", type=str)
