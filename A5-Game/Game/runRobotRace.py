@@ -33,11 +33,15 @@ if args.map is not None:
 else:
    m = Map.makeRandom(30, 30, args.density)
 
-sim = Simulator(map=m, vizfile=args.viz, framerate=args.framerate)
+if __name__ == "__main__":
+	sim = Simulator(map=m, vizfile=args.viz, framerate=args.framerate)
 
-for name,module_name in robot_module_names.items():
-	for p in robotmodules[module_name].players:
-		p.player_modname = name
-		sim.add_player(p)
+	for name,module_name in robot_module_names.items():
+		for p in robotmodules[module_name].players:
+			p.player_modname = name
+			sim.add_player(p)
 
-sim.play(rounds=args.number, jumps_allowed=args.allow_jumps, mine_mode=args.mine_mode.lower())
+	sim.play(rounds=args.number, jumps_allowed=args.allow_jumps, mine_mode=args.mine_mode.lower())
+
+	if args.stats:
+		plot_stats(sim, 'stats.png')
