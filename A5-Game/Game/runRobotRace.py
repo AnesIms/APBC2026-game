@@ -20,9 +20,13 @@ parser.add_argument('--allow_jumps', help="allow players to jump over walls by r
 
 args = parser.parse_args()
 
-robot_module_names = {"Test":"test-RobotRace",
-					"Beatme": "beatme-RobotRace"}
+# full game
 
+robot_module_names = {"Test":"test-RobotRace",
+					"Beatme": "beatme-RobotRace",
+					"GoldDiggers": "GoldDiggers-RobotRace"} 
+# only our bot
+robot_module_names = {"GoldDiggers": "GoldDiggers-RobotRace"}
 robotmodules = { m:__import__(m) for m in robot_module_names.values() }
 
 if args.map is not None:
