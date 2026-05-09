@@ -76,7 +76,7 @@ class BasicBot(Player):
         
         def check_for_obstacles(self, status, x, y):
                 '''
-                checks a given tile for obstacles
+                checks a given tile for obstacles (walls & mines)
                 Input: current status and x, y coordinates of tile to check
                 Output: True -> obstacle on tile, False -> tile is clear, None if we cannot see the tile
                 '''
