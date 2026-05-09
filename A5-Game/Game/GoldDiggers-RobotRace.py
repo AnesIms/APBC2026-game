@@ -64,9 +64,9 @@ class BasicBot(Player):
                 path = [move]
 
                 ## don't move if the pot is too far away
-                # calculate manhattan distance between current position and gold pot 
-                # TODO improve to account for diagonal moves
-                distance = abs(xDir) + abs(yDir)
+                # calculate chebyshev distance between current position and gold pot 
+                # diagonal moves are allowed
+                distance = max(abs(xDir), abs(yDir))
                 
                 if numMoves>0 and distance/numMoves > status.goldPotRemainingRounds:
                         numMoves = 0
