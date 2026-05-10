@@ -74,3 +74,33 @@ At the end of this milestone, we should have:
 - a way to visualize game runs,
 - a basic way to test several runs,
 - a shared starting point for later improvements.
+
+
+# Milestone 2: Individual Strategy Bots
+
+## Goal
+
+At the end of this milestone, we should have three different strategy bots that can be compared against each other and against the example bots. From these bots, we can later identify which behaviors work best and combine the strongest ideas.
+
+### Strategy 1: XAE-12-S1.py (S1 for Strategy 1)
+
+S1 remembers the map during the game, explores unknown areas preferably in the direction of the current gold pot, and uses BFS to find known paths to the gold. If a reasonable gold path is known, the bot sprints with multiple bought moves toward the gold, as long as the cost is worth it compared to the pot value and a small gold reserve remains.
+
+### Strategy 2: (Name suggestion: XAE-12-S2.py)
+
+Strategy idea:
+
+### Strategy 3: (Name suggestion: XAE-12-S3.py)
+
+Strategy idea:
+
+---
+
+## Milestone 2 outcome
+
+At the end of this milestone, we should have:
+
+- three different strategy bots
+- a short written explanation for each strategy
+- ideas for combining the best parts into a stronger future bot
+- 
