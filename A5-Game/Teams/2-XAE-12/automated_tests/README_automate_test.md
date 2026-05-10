@@ -16,8 +16,12 @@ python automated_RobotTest.py --map Game/Maps/maze_map.dat --number 100 --games 
 Starting 20 games silently... Please wait.
 
 --- STATISTICAL ANALYSIS ---
+
 Test_Erratic: 2 wins (10.0%) | Avg Moves per Game: 100.0
+
 Beatme_SillyScout: 10 wins (50.0%) | Avg Moves per Game: 19.2
+
 Adlhartm_Naive: 8 wins (40.0%) | Avg Moves per Game: 307.4
+
 Draws/Ties: 0 games (0.0%)
 
