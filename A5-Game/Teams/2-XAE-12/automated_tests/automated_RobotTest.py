@@ -4,10 +4,7 @@ import random
 import argparse
 import sys
 import os
-
-# --- THIS IMPORT MUTES THE SPAMMY PRINTS ---
 from contextlib import redirect_stdout 
-
 from Game import game_utils, simulator, player_base, shortestpaths
 from Game.game_utils import nameFromPlayerId
 from Game.game_utils import Direction as D, MoveStatus as D, MoveStatus
@@ -29,11 +26,13 @@ parser.add_argument('--games', help="number of games to simulate", type=int, def
 
 args = parser.parse_args()
 
+# Add your robot player here
 robot_module_names = {"Test_Erratic":"test-RobotRace",
                       "Beatme_SillyScout": "beatme-RobotRace",
                       "Adlhartm_Naive": "adlhartm-RobotRace"}
 
-
+# Ensure that the robot is the correct directory. It will search for a subdirectory from the local script directory
+# In this case the subdirectory from the local script directory is "Robots"
 script_dir = os.path.dirname(os.path.realpath(__file__))
 robots_dir = os.path.join(script_dir, 'Robots')
 sys.path.insert(0, robots_dir)
@@ -45,7 +44,6 @@ if args.map is not None:
 else:
    base_map = Map.makeRandom(30, 30, args.density)
 
-# --- STAT TRACKERS ---
 win_stats = {name: 0 for name in robot_module_names.keys()}
 win_stats["Draw/None"] = 0
 move_stats = {name: 0 for name in robot_module_names.keys()}
@@ -55,41 +53,33 @@ is_batch_run = args.games > 1
 if is_batch_run:
     print(f"Starting {args.games} games silently... Please wait.")
 
-# =====================================================================
-# --- THE BUG FIX: ISOLATED TRACKER FACTORY ---
-# This prevents the bots from sharing the same brain (Loop Closure Bug)
-# and prevents the simulator from crashing when bots yield generators.
 def attach_tracker(player_obj, method_name):
     original_brain = getattr(player_obj, method_name)
     
     def intercepted(*args, **kwargs):
-        # Run the bot's normal brain
         raw_moves = original_brain(*args, **kwargs)
         
-        # Convert the output to a safe list
         moves_list = [] if raw_moves is None else list(raw_moves)
             
-        # Count the valid moves
         if moves_list:
             player_obj.total_moves_made += len(moves_list)
             
         return moves_list
         
     setattr(player_obj, method_name, intercepted)
-# =====================================================================
 
 for game_num in range(args.games):
     
     current_viz = None if is_batch_run else args.viz
     sim = Simulator(map=base_map, vizfile=current_viz, framerate=args.framerate)
     
+	# This doesn't silence all output, but it will silence the print statements from the Simulator when running in batch mode
     if is_batch_run:
         sim.printInitial = False
         sim.printRoundBegin = False
         sim.printEvents = False
         sim.printMoves = False
 
-    # Keep a secure list of the PLAYER OBJECTS to check stats later
     team_mapping = []
 
     for name, module_name in robot_module_names.items():
@@ -98,26 +88,22 @@ for game_num in range(args.games):
             fresh_player.player_modname = name
             fresh_player.total_moves_made = 0
             
-            # Target the specific 'move' method found in your source code
             if hasattr(fresh_player, 'move'):
                 attach_tracker(fresh_player, 'move')
-            else:
-                print(f"CRITICAL WARNING: Could not find 'move' method for {name}!")
 
             sim.add_player(fresh_player)
-            team_mapping.append(fresh_player) # Store the actual player object!
+            team_mapping.append(fresh_player) 
 
     if not is_batch_run:
         print(f"Running Game {game_num + 1}/{args.games}...", end="\r")
     
-    # --- MUTE THE SIMULATOR PRINTS ---
     if is_batch_run:
+		# redirect_stdout silences all print outputs that are still remaining from other modules
         with open(os.devnull, 'w') as f, redirect_stdout(f):
             result = sim.play(rounds=args.number, jumps_allowed=args.allow_jumps, mine_mode=args.mine_mode.lower())
     else:
         result = sim.play(rounds=args.number, jumps_allowed=args.allow_jumps, mine_mode=args.mine_mode.lower())
 
-    # --- TALLY THE WINNER (Checking the Simulator Vault) ---
     winner_name = None
     max_gold = -1
     
@@ -125,7 +111,6 @@ for game_num in range(args.games):
         team_name = player_obj.player_modname 
         player_gold = 0
         
-        # Dig directly into the simulator's internal data arrays
         if len(sim._status) > i:
             if hasattr(sim._status[i], 'gold'):
                 player_gold = sim._status[i].gold
@@ -141,12 +126,10 @@ for game_num in range(args.games):
     if winner_name:
         win_stats[winner_name] += 1
         
-    # --- TALLY THE MOVES ---
     for player_obj in team_mapping:
         team_name = player_obj.player_modname
         move_stats[team_name] += getattr(player_obj, 'total_moves_made', 0)
 
-# --- FINAL PRINTOUT ---
 print("\n--- STATISTICAL ANALYSIS ---")
 for team, wins in win_stats.items():
     win_rate = (wins / args.games) * 100
