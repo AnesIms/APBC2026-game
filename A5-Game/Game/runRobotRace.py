@@ -7,6 +7,7 @@ from game_utils import Direction as D, MoveStatus
 from game_utils import Tile, TileStatus, TileObject
 from game_utils import Map, Status
 from simulator import Simulator
+
 from player_base import Player
 
 parser = argparse.ArgumentParser(description="Robot Race Simulator 7000")
@@ -21,8 +22,8 @@ parser.add_argument('--allow_jumps', help="allow players to jump over walls by r
 args = parser.parse_args()
 
 robot_module_names = {"Test":"test-RobotRace",
-					"Beatme": "beatme-RobotRace"}
-
+					"Beatme": "beatme-RobotRace",
+					"GoldDiggers": "GoldDiggers-RobotRace"} 
 robotmodules = { m:__import__(m) for m in robot_module_names.values() }
 
 if args.map is not None:
