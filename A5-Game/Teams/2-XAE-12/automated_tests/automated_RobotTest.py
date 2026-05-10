@@ -29,7 +29,8 @@ args = parser.parse_args()
 # Add your robot player here
 robot_module_names = {"Test_Erratic":"test-RobotRace",
                       "Beatme_SillyScout": "beatme-RobotRace",
-                      "Adlhartm_Naive": "adlhartm-RobotRace"}
+                      "Adlhartm_Naive": "adlhartm-RobotRace",
+					  "XAE-12_Baseline": "XAE-12-RobotRace"}
 
 # Ensure that the robot is the correct directory. It will search for a subdirectory from the local script directory
 # In this case the subdirectory from the local script directory is "Robots"
