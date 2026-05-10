@@ -8,7 +8,7 @@ The script_dir is the directory from which the code is being executed. If you pl
 
 ## Execution
 ```
-python automated_RobotTest.py --map Game/Maps/maze_map.dat --number 100 -games 10
+python automated_RobotTest.py --map Game/Maps/maze_map.dat --number 100 --games 10
 ```
 
 
