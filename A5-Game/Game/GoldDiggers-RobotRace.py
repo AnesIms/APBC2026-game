@@ -54,12 +54,12 @@ class BasicBot(Player):
                 # np.sign returns -1, 0 or 1 depending on the sign of the variable
                 newX = int(curpos[0] + np.sign(xDir))
                 newY = int(curpos[1] + np.sign(yDir))
-                # avoid crashing into wall by staying on our current spot
+                move = (newX, newY)                
+                # avoid crashing into wall by not moving at all
                 if self.check_for_obstacles(status, newX, newY):
-                        move = (curpos[0], curpos[1])
-                else: move = (newX, newY)                
+                        numMoves = 0
 
-                print(move, "move")
+                print(move, numMoves, "move & numMoves")
                 # create path of size 1 (basic bot only moves 1 step at a time)
                 path = [move]
 
@@ -68,6 +68,7 @@ class BasicBot(Player):
                 # diagonal moves are allowed
                 distance = max(abs(xDir), abs(yDir))
                 
+                #TODO: also check for total remaining rounds in the game
                 if numMoves>0 and distance/numMoves > status.goldPotRemainingRounds:
                         numMoves = 0
                         print("BasicBot: Closest Pot too far -> waiting mode")
