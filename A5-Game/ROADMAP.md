@@ -75,6 +75,7 @@ At the end of this milestone, we should have:
 - a basic way to test several runs,
 - a shared starting point for later improvements.
 
+---
 
 # Milestone 2: Individual Strategy Bots
 
