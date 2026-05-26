@@ -4,15 +4,17 @@ from player_base import Player
 from collections import deque
 # Import movement directions, map handling, tile information (is the tile a wall, unknown ...), and the base Player class
 
-class StrategyOneBot(Player):
+class StrategyTwoBot(Player):
     # - remember discovered parts of the map
     # - use BFS to find known shortest paths to the gold
     # - explore unknown areas if no useful path to the gold is known
     # - buy multiple moves per round when rushing to gold is worth the cost
     
     def reset(self, player_id, max_players, width, height):
-        self.player_name = "XAE-12 S1"
+        self.player_name = "XAE-12 S2"
         self.ourMap = Map(width, height)
+        self.current_enemies = set()
+        self.enemy_history = {}
         # Called once at the beginning of a game.
         # ourMap is our remembered map.
         # It starts mostly unknown, but during the game we continuously update it
@@ -68,6 +70,9 @@ class StrategyOneBot(Player):
                 next_x = current_x + dx
                 next_y = current_y + dy
                 next_pos = (next_x, next_y)
+
+                if next_pos in self.current_enemies and next_pos != goal:
+                    continue
 
                 if next_pos in came_from:
                     continue
@@ -210,6 +215,66 @@ class StrategyOneBot(Player):
 
         return path_length <= direct_distance * 2 + 5
 
+
+    def update_enemy_tracker(self, status):
+        for other in status.others:
+            if other is None:
+                continue
+
+            enemy_id = other.player
+            current_position = (other.x, other.y)
+
+            if enemy_id in self.enemy_history:
+                last_position = self.enemy_history[enemy_id]["last_position"]
+
+                distance_moved = max(
+                    abs(current_position[0] - last_position[0]),
+                    abs(current_position[1] - last_position[1])
+                )
+
+                if distance_moved <= 6:
+                    old_average = self.enemy_history[enemy_id]["average_speed"]
+                    new_average = 0.5 * old_average + 0.5 * distance_moved
+                    self.enemy_history[enemy_id]["average_speed"] = new_average
+
+                self.enemy_history[enemy_id]["last_position"] = current_position
+
+            else:
+                self.enemy_history[enemy_id] = {
+                    "last_position": current_position,
+                    "average_speed": 2.0
+                }
+
+
+    def estimate_fastest_enemy_eta_to_gold(self, status, gold_position):
+        fastest_eta = float("inf")
+
+        for other in status.others:
+            if other is None:
+                continue
+
+            enemy_id = other.player
+            enemy_position = (other.x, other.y)
+
+            path = self.shortest_path(enemy_position, gold_position)
+
+            if path is None:
+                continue
+
+            enemy_distance = len(path) - 1
+            enemy_speed = self.enemy_history.get(
+                enemy_id,
+                {"average_speed": 2.0}
+            )["average_speed"]
+
+            eta = enemy_distance / max(enemy_speed, 1.0)
+
+            if eta < fastest_eta:
+                fastest_eta = eta
+
+        return fastest_eta
+
+
     def move(self, status):
         # Update remembered map with all currently visible fields
         for x in range(self.ourMap.width):
@@ -227,6 +292,14 @@ class StrategyOneBot(Player):
         current_position = (status.x, status.y)
         gold_position = next(iter(status.goldPots))
 
+        self.current_enemies = set()
+
+        for other in status.others:
+            if other is not None:
+                self.current_enemies.add((other.x, other.y))
+
+        self.update_enemy_tracker(status)
+
         # Try to find a shortest path to the gold using our remembered map
         path_to_gold = self.shortest_path(current_position, gold_position)
 
@@ -238,12 +311,29 @@ class StrategyOneBot(Player):
             path_length = len(path_to_gold) - 1
             gold_value = status.goldPots[gold_position]
 
-        # Buy several moves if the path is good and the gold pot is worth the cost.
-            burst_length = self.choose_burst_length(
+            enemy_eta = self.estimate_fastest_enemy_eta_to_gold(status, gold_position)
+            our_eta = path_length / 2.0
+
+            we_are_likely_first = our_eta <= enemy_eta
+
+            normal_burst = self.choose_burst_length(
                 path_length,
                 gold_value,
                 status.gold
             )
+
+            if our_eta <= enemy_eta:
+                # We are probably first: use normal S1 burst.
+                burst_length = normal_burst
+
+            elif our_eta <= enemy_eta + 1.5:
+                # The race is close: do not give up too early.
+                # Move at least 2 steps, but stay within the normal S1 burst limit.
+                burst_length = max(2, normal_burst)
+
+            else:
+                # Enemy is clearly faster: save gold.
+                burst_length = 1
 
             moves = self.path_to_moves(path_to_gold, burst_length)
 
@@ -263,5 +353,5 @@ class StrategyOneBot(Player):
         # If neither gold nor frontier is reachable, stay in place
         return []
 
-players = [StrategyOneBot()]
+players = [StrategyTwoBot()]
 # The simulator imports this list to load our bot.
