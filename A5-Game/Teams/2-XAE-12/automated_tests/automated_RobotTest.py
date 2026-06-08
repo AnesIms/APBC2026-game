@@ -28,9 +28,11 @@ parser.add_argument('--games', help="number of games to simulate", type=int, def
 args = parser.parse_args()
 
 # Add your robot player here
-robot_module_names = {"Test_Erratic":"test-RobotRace",
-                      "Beatme_SillyScout": "beatme-RobotRace",
-                      "Adlhartm_Advanced": "adlhartm-RobotRace",
+robot_module_names = {"EdgeCamperBot":"edge_camper-RobotRace",
+                      "StrategyThreeOneBot":"XAE-12-S3_1",
+                      #"StalkerHunterPlayer":"stalkerhunter_stats-RobotRace",
+                      "StrategyFiveBot": "XAE-12-S5",
+                      "NaivePlayer": "rivalrysprint-RobotRace",
                       }
 
 
