@@ -4,6 +4,14 @@ from collections import deque
 import math
 
 
+# Optional parameter file used by optimization_runner.py.
+# If current_bot_params.py is not present, the class defaults below are used.
+try:
+    import current_bot_params as bot_params
+except ImportError:
+    bot_params = None
+
+
 class StrategyFiveBot(Player):
     """
     Adaptive gold-chasing bot with three strategies that activate in sequence.
@@ -1027,5 +1035,36 @@ class StrategyFiveBot(Player):
                 f.write("\n".join(lines) + "\n")
         except Exception as e:
             print("Could not write stats file:", e)
+
+
+# Allow optimization_runner.py to override selected class parameters without
+# editing this bot file for every test run.
+TUNABLE_PARAMETERS = [
+    "LOW_GOLD_RECOVERY_THRESHOLD",
+    "MAX_BURST_MOVES",
+    "GOLD_SPEND_FRACTION",
+    "MINIMUM_GOLD_RESERVE",
+    "HIGH_BUDGET_THRESHOLD",
+    "MIN_PROFIT_NORMAL",
+    "MIN_PROFIT_RIVALRY",
+    "GOLD_PATH_FACTOR",
+    "GOLD_PATH_BONUS",
+    "RIVALRY_SCORE_MARGIN",
+    "STALK_DISTANCE",
+    "LOSING_RANK_THRESHOLD",
+    "LOSING_STREAK_THRESHOLD",
+    "STRATEGY_PATIENCE",
+    "UNWINNABLE_ETA_RATIO",
+    "UNWINNABLE_DISTANCE_RATIO",
+    "DISTANCE_CUTOFF",
+    "STATIONARY_OBSERVATION_THRESHOLD",
+    "STATIONARY_SPAWN_BLOCK_RADIUS",
+    "STATIONARY_SPAWN_BLOCK_PENALTY",
+]
+
+if bot_params is not None:
+    for parameter_name in TUNABLE_PARAMETERS:
+        if hasattr(bot_params, parameter_name):
+            setattr(StrategyFiveBot, parameter_name, getattr(bot_params, parameter_name))
 
 players = [StrategyFiveBot()]

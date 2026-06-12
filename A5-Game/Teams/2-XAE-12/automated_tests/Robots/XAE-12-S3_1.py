@@ -3,6 +3,13 @@ from Game.game_utils import Map, TileStatus
 from Game.player_base import Player
 from collections import deque
 import math
+
+# Optional parameter file used by optimization_runner_S3_1.py.
+# If current_s31_params.py is not present, the class defaults below are used.
+try:
+    import current_s31_params as bot_params
+except ImportError:
+    bot_params = None
 # Import movement directions, map handling, tile information (is the tile a wall, unknown ...), and the base Player class
 
 
@@ -635,6 +642,31 @@ class StrategyThreeOneBot(Player):
 
         # If neither gold nor frontier is reachable, stay in place
         return []
+
+
+# Allow optimization_runner_S3_1.py to override selected class parameters without
+# editing this bot file for every test run.
+TUNABLE_PARAMETERS = [
+    "MAX_BURST_MOVES",
+    "GOLD_SPEND_FRACTION",
+    "MINIMUM_GOLD_RESERVE",
+    "DEFAULT_ENEMY_SPEED",
+    "HIGH_BUDGET_THRESHOLD",
+    "HIGH_BUDGET_BURST",
+    "MIN_PROFIT_NORMAL",
+    "MIN_PROFIT_RIVALRY",
+    "FRONTIER_GOLD_WEIGHT",
+    "GOLD_PATH_FACTOR",
+    "GOLD_PATH_BONUS",
+    "RIVALRY_SCORE_MARGIN",
+    "LOST_POT_ENEMY_DISTANCE",
+]
+
+if bot_params is not None:
+    for parameter_name in TUNABLE_PARAMETERS:
+        if hasattr(bot_params, parameter_name):
+            setattr(StrategyThreeOneBot, parameter_name, getattr(bot_params, parameter_name))
+
 
 players = [StrategyThreeOneBot()]
 # The simulator imports this list to load our bot.
