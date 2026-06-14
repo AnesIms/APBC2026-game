@@ -1,6 +1,6 @@
-from game_utils import Direction as D 
-from game_utils import Map, TileStatus 
-from player_base import Player
+from Game.game_utils import Direction as D 
+from Game.game_utils import Map, TileStatus 
+from Game.player_base import Player
 from collections import deque
 import math
 # Import movement directions, map handling, tile information (is the tile a wall, unknown ...), and the base Player class

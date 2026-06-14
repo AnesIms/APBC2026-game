@@ -23,10 +23,11 @@ parser.add_argument('--stats', help="generate statistics plots", action='store_t
 
 args = parser.parse_args()
 
-robot_module_names = {"StrategyThreeOneBot":"XAE-12-S3_1",
+robot_module_names = {#"StrategyThreeOneBot":"XAE-12-S3_1",
 					  "StrategyTwoBot":"XAE-12-S2",
-					  "StalkerHunterPlayer":"stalkerhunter_stats-RobotRace",
-					  "StrategyFiveBot": "XAE-12-S5",
+					  "XAE12Team": "XAE-12-TagTeam",
+					  #"StalkerHunterPlayer":"stalkerhunter_stats-RobotRace",
+					  #"StrategyFiveBot": "XAE-12-S5",
 					"StrategyFourBot": "XAE-12-S4"}
 
 robotmodules = { m:__import__(m) for m in robot_module_names.values() }

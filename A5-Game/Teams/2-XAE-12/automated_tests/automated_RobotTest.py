@@ -29,10 +29,11 @@ args = parser.parse_args()
 
 # Add your robot player here
 robot_module_names = {"MyPlayer":"group4",
-                      "StrategyThreeOneBot":"XAE-12-S3_1",
+                      #"StrategyThreeOneBot":"XAE-12-S3_1",
                       "NaivePlayer":"rivalrysprint-RobotRace",
-                      "StrategyFiveBot": "XAE-12-S5",
+                      #"StrategyFiveBot": "XAE-12-S5",
                       "D3STROYER": "D3STROYER",
+                      "XAE12Team": "XAE-12-Team",
                       }
 
 
